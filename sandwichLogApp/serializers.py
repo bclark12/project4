@@ -1,18 +1,17 @@
 from rest_framework import serializers
-from .models import Issue, User
+from .models import User, Category, Sandwich
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model  = User
-        fields = ['id', 'email', 'username']
+        fields = ['id', 'username', 'email']
 
-class IssueSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model  = Issue
-        fields = [
-            'id', 
-            'description', 
-            'status', 
-            'createdOn', 
-            'user'
-            ]
+        model = Category
+        fields = ['id', 'category', 'user']
+
+class SandwichSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sandwich
+        fields = ['id', 'name', 'place', 'createdOn', 'category']
