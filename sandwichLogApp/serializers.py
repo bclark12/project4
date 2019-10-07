@@ -14,4 +14,4 @@ class CategorySerializer(serializers.ModelSerializer):
 class SandwichSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sandwich
-        fields = ['id', 'name', 'place', 'createdOn', 'category']
+        fields = ['id', 'name', 'location', 'createdOn', 'category']
