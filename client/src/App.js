@@ -1,6 +1,50 @@
 import React from 'react';
 import './App.css';
 
+const userPreview = (user) => {
+  return (
+  <option value={user.id}>{user.username}</option>
+  )
+}
+
+const userList = (users, currentUserId, onChange) => {
+  return (
+  <select value={currentUserId} onChange={(evnt) => onChange(evnt.target.value)}>
+    {users.map(userPreview)}
+  </select>
+  )
+}
+
+const categoryPreview = (category) => {
+  return (
+  <option value={category.id}>{category.category}</option>
+  )
+}
+
+const userCategoryList = (categories, currentCategoryId, onChange) => {
+  return (
+    <select value={currentCategoryId} onChange={(evnt) => onChange(evnt.target.value)}>
+      {categories.map(categoryPreview)}
+    </select>
+  )
+}
+
+const sandwichPreview = (sandwich) => (
+  <li>{sandwich.id} - {sandwich.name}</li>
+)
+
+const sandwichList = (sandwichesArray) => (
+  <ul>
+    {sandwichesArray.map(sandwichPreview)}
+  </ul>
+)
+
+const categorySandwichList = (category) => (
+  <div>
+    {category.category}
+    {sandwichList(category.sandwiches)}
+  </div>
+)
 
 
 class App extends React.Component{
@@ -43,7 +87,7 @@ class App extends React.Component{
         categories: {
           3: {
             id: 3,
-            category: "Burger",
+            category: "Burger2",
             sandwiches: [
               {id: 5, name: "Gut Puncher", location: "Burger Town", 
               description: "Really good", createdOn: "2019-10-29T15:05:18.180058Z"},
@@ -53,7 +97,7 @@ class App extends React.Component{
           },
           4: {
             id: 4,
-            category: "Vegan",
+            category: "Vegan2",
             sandwiches: [
               {id: 7, name: "lettuce", location: "hippy place", 
               description: "green", createdOn: "2019-11-29T15:05:18.180058Z"},
@@ -65,11 +109,36 @@ class App extends React.Component{
       }
     }
   }
+
+  getAllUsers = () =>
+    Object.values(this.state.users)
+
+  setCurrentUser = (currentUser) => {
+    this.setState({ currentUser })
+  }
+
+  getCurrentUser = () => 
+    this.state.users[this.state.currentUser]
+
+  getUserCategories = () =>
+    Object.values(this.getCurrentUser().categories)
+
+  setCurrentCategory = (currentCategory) => {
+    let users = {...this.state.users}
+    users[this.state.currentUser].currentCategory = currentCategory
+    this.setState({ users })
+  }
+
+  getCurrentCategory = () =>
+    this.getCurrentUser().categories[this.getCurrentUser().currentCategory]
+  
+
   render() {
     return (
       <div>
-        <h1>hello world</h1>
-        <li>{this.state.users[2].categories[3].sandwiches[0].name}</li>
+        {userList(this.getAllUsers(), this.state.currentUser, this.setCurrentUser)}
+        {userCategoryList(this.getUserCategories(), this.getCurrentUser().currentCategory, this.setCurrentCategory)}
+        {categorySandwichList(this.getCurrentCategory())}
       </div>
     )
   }
