@@ -137,7 +137,8 @@ class App extends React.Component{
     return (
       <div>
         {userList(this.getAllUsers(), this.state.currentUser, this.setCurrentUser)}
-        {userCategoryList(this.getUserCategories(), this.getCurrentUser().currentCategory, this.setCurrentCategory)}
+        {userCategoryList(this.getUserCategories(), 
+        this.getCurrentUser().currentCategory, this.setCurrentCategory)}
         {categorySandwichList(this.getCurrentCategory())}
       </div>
     )
