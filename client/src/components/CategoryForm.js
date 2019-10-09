@@ -5,10 +5,21 @@ class CategoryForm extends Component {
         category: ""
     }
 
+    handleInput = (evnt) => {
+        this.setState({ category: evnt.target.value })
+    }
+
+    handleSubmit = (evnt) => {
+        evnt.preventDefault();
+        this.props.addNewCategory(this.state.category)
+        this.setState({ category: "" })
+    }
+
     render() {
         return (
-            <form>
-                <input type="text" name="category" value={this.state.category} placeholder="Category" />
+            <form onSubmit={this.handleSubmit}>
+                <input type="text" name="category" onChange={this.handleInput} value={this.state.category} placeholder="Category" />
+                <input type="submit" value="Add Category" />                
             </form>
         )
     }

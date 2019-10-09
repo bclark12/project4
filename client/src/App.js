@@ -101,12 +101,20 @@ const getUsersAndCategoriesAndSandwichesFromServer = () =>
         matchingCategoriesAndSandwiches(users, categories, sandwiches))))
 
 const saveUserToServer = (newUser) =>
-fetch('/api/user/',
-  { 
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(newUser)
-  }).then(res => res.json())
+  fetch('/api/user/',
+    { 
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(newUser)
+    }).then(res => res.json())
+
+const saveCategoryToServer = (newCategory) =>
+  fetch('/api/category/',
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newCategory)
+    }).then(res => res.json())
 
 class App extends React.Component{
   state = {
@@ -206,10 +214,33 @@ class App extends React.Component{
   addNewUser = (newUserInfo) => {
     saveUserToServer(newUserInfo)
     .then(newUser => {
+      let defaultCategory = {
+        0: {
+          id: 0,
+          category: "",
+          user: newUser.id,
+          sandwiches: []
+        }
+      }
       let users = {...this.state.users};
       users[newUser.id] = newUser;
+      users[newUser.id].categories = defaultCategory
+      users[newUser.id].currentCategory = 0
       this.setState({ users, currentUser: newUser.id });
     })
+  }
+
+  addNewCategory = (category) => {
+    saveCategoryToServer({ category, user: this.state.currentUser })
+    .then(newCategory => {
+      let users = {...this.state.users};
+      newCategory.sandwiches = []
+      console.log(newCategory)
+      users[this.state.currentUser].categories[newCategory.id] = newCategory
+      users[this.state.currentUser].currentCategory = newCategory.id
+      this.setState({ users })
+    })
+
   }
   
   render() {
@@ -220,7 +251,7 @@ class App extends React.Component{
           this.getCurrentUser().currentCategory, this.setCurrentCategory)}
         {categorySandwichList(this.getCurrentCategory())}
         <UserForm addNewUser={this.addNewUser} />
-        <CategoryForm />
+        <CategoryForm addNewCategory={this.addNewCategory} />
         <SandwichForm />
       </div>
     )

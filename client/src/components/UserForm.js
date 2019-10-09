@@ -23,7 +23,7 @@ class UserForm extends Component {
             <form onSubmit={this.handleSubmit}>
                 <input type="text" name="username" onChange={this.handleInput} value={this.state.username} placeholder="Username" />
                 <input type="email" name="email" onChange={this.handleInput} value={this.state.email} placeholder="Email" />
-                <input type="submit" value="New User" />
+                <input type="submit" value="Add User" />
             </form>
         )
     }
