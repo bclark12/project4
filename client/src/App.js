@@ -116,6 +116,14 @@ const saveCategoryToServer = (newCategory) =>
       body: JSON.stringify(newCategory)
     }).then(res => res.json())
 
+const saveSandwichToServer = (newSandwich) =>
+    fetch('/api/sandwich/',
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newSandwich)
+      }).then(res => res.json())
+
 class App extends React.Component{
   state = {
     currentUser: 1,
@@ -240,8 +248,19 @@ class App extends React.Component{
       users[this.state.currentUser].currentCategory = newCategory.id
       this.setState({ users })
     })
-
   }
+
+  addNewSandwich = (sandwich) => {
+    console.log(this.getCurrentUser().currentCategory)
+    sandwich.category = this.getCurrentUser().currentCategory
+    saveSandwichToServer(sandwich)
+    .then(newSandwich => {
+      let users = {...this.state.users};
+      let currentCategoryVar = this.state.users[this.state.currentUser].currentCategory
+      users[this.state.currentUser].categories[currentCategoryVar].sandwiches.push(newSandwich);
+      this.setState({ users })
+    })
+  } 
   
   render() {
     return (
@@ -252,7 +271,7 @@ class App extends React.Component{
         {categorySandwichList(this.getCurrentCategory())}
         <UserForm addNewUser={this.addNewUser} />
         <CategoryForm addNewCategory={this.addNewCategory} />
-        <SandwichForm />
+        <SandwichForm addNewSandwich={this.addNewSandwich} />
       </div>
     )
   }
