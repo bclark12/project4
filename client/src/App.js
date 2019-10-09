@@ -1,5 +1,8 @@
 import React from 'react';
 import './App.css';
+import UserForm from './components/UserForm'
+import CategoryForm from './components/CategoryForm'
+import SandwichForm from './components/SandwichForm'
 
 const userPreview = (user) => {
   return (
@@ -46,6 +49,64 @@ const categorySandwichList = (category) => (
   </div>
 )
 
+const getUsersFromServer = () =>
+  fetch('/api/user/')
+  .then(res => res.json())
+
+
+
+const getCategoriesFromServer = () =>
+  fetch('/api/category/')
+  .then(res => res.json())
+
+const getSandwichesFromServer = () =>
+  fetch('/api/sandwich/')
+  .then(res => res.json())
+
+
+
+const matchingCategoriesAndSandwiches = (users, categories, sandwiches) =>
+  users.reduce((obj, user) => {
+    let matchingCategoryArr = categories.filter(category => category.user === user.id);
+    let matchingObj = matchingCategoryArr.reduce((objTwo, category) => {
+      category.sandwiches = sandwiches.filter(sandwich => sandwich.category === category.id);
+      objTwo[category.id] = category
+      return objTwo
+    }, {})
+
+    user.categories = matchingObj
+
+    let defaultCategory = {
+      0: {
+        id: 0,
+        category: "",
+        user: user.id,
+        sandwiches: []
+      }
+    }
+
+    if (Object.keys(user.categories).length < 1) {
+      user.categories = defaultCategory
+    }
+
+    user.currentCategory = Object.keys(user.categories)[(Object.keys(user.categories).length) - 1]
+    obj[user.id] = user;
+    return obj;
+  }, {})
+
+const getUsersAndCategoriesAndSandwichesFromServer = () =>
+  getUsersFromServer().then(users => 
+    getCategoriesFromServer().then(categories => 
+      getSandwichesFromServer().then(sandwiches => 
+        matchingCategoriesAndSandwiches(users, categories, sandwiches))))
+
+const saveUserToServer = (newUser) =>
+fetch('/api/user/',
+  { 
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(newUser)
+  }).then(res => res.json())
 
 class App extends React.Component{
   state = {
@@ -110,6 +171,14 @@ class App extends React.Component{
     }
   }
 
+  componentDidMount = () => {
+    getUsersAndCategoriesAndSandwichesFromServer()
+      .then(users => {
+        this.setState({ users })
+      })
+  }
+
+
   getAllUsers = () =>
     Object.values(this.state.users)
 
@@ -123,6 +192,8 @@ class App extends React.Component{
   getUserCategories = () =>
     Object.values(this.getCurrentUser().categories)
 
+  
+
   setCurrentCategory = (currentCategory) => {
     let users = {...this.state.users}
     users[this.state.currentUser].currentCategory = currentCategory
@@ -131,15 +202,26 @@ class App extends React.Component{
 
   getCurrentCategory = () =>
     this.getCurrentUser().categories[this.getCurrentUser().currentCategory]
-  
 
+  addNewUser = (newUserInfo) => {
+    saveUserToServer(newUserInfo)
+    .then(newUser => {
+      let users = {...this.state.users};
+      users[newUser.id] = newUser;
+      this.setState({ users, currentUser: newUser.id });
+    })
+  }
+  
   render() {
     return (
       <div>
         {userList(this.getAllUsers(), this.state.currentUser, this.setCurrentUser)}
         {userCategoryList(this.getUserCategories(), 
-        this.getCurrentUser().currentCategory, this.setCurrentCategory)}
+          this.getCurrentUser().currentCategory, this.setCurrentCategory)}
         {categorySandwichList(this.getCurrentCategory())}
+        <UserForm addNewUser={this.addNewUser} />
+        <CategoryForm />
+        <SandwichForm />
       </div>
     )
   }
