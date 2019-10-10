@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link, Route, Switch } from 'react-router-dom';
 import './App.css';
 import UserForm from './components/UserForm'
 import CategoryForm from './components/CategoryForm'
 import SandwichForm from './components/SandwichForm'
+import SandwichDetail from './components/SandwichDetail'
 
 const userPreview = (user) => {
   return (
@@ -33,7 +35,11 @@ const userCategoryList = (categories, currentCategoryId, onChange) => {
 }
 
 const sandwichPreview = (sandwich) => (
-  <li>{sandwich.id} - {sandwich.name}</li>
+  <li>
+    <Link to={`/sandwich/${sandwich.id}`}>
+      {sandwich.id} - {sandwich.name}
+    </Link>
+  </li>
 )
 
 const sandwichList = (sandwichesArray) => (
@@ -253,13 +259,24 @@ class App extends React.Component{
   render() {
     return (
       <div>
-        {userList(this.getAllUsers(), this.state.currentUser, this.setCurrentUser)}
-        {userCategoryList(this.getUserCategories(), 
-          this.getCurrentUser().currentCategory, this.setCurrentCategory)}
-        {categorySandwichList(this.getCurrentCategory())}
-        <UserForm addNewUser={this.addNewUser} />
-        <CategoryForm addNewCategory={this.addNewCategory} />
-        <SandwichForm addNewSandwich={this.addNewSandwich} currentCategory={this.getCurrentCategory} />
+        <Switch>
+          <Route
+            path="/"
+            exact
+            render={() => (
+              <div>
+                {userList(this.getAllUsers(), this.state.currentUser, this.setCurrentUser)}
+                {userCategoryList(this.getUserCategories(), 
+                  this.getCurrentUser().currentCategory, this.setCurrentCategory)}
+                {categorySandwichList(this.getCurrentCategory())}
+                <UserForm addNewUser={this.addNewUser} />
+                <CategoryForm addNewCategory={this.addNewCategory} />
+                <SandwichForm addNewSandwich={this.addNewSandwich} currentCategory={this.getCurrentCategory} />
+              </div>
+            )}
+          />
+          <Route path="/sandwich/:id" component={SandwichDetail} />
+        </Switch>
       </div>
     )
   }
