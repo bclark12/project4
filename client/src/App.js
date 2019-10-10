@@ -53,8 +53,6 @@ const getUsersFromServer = () =>
   fetch('/api/user/')
   .then(res => res.json())
 
-
-
 const getCategoriesFromServer = () =>
   fetch('/api/category/')
   .then(res => res.json())
@@ -62,8 +60,6 @@ const getCategoriesFromServer = () =>
 const getSandwichesFromServer = () =>
   fetch('/api/sandwich/')
   .then(res => res.json())
-
-
 
 const matchingCategoriesAndSandwiches = (users, categories, sandwiches) =>
   users.reduce((obj, user) => {
@@ -73,9 +69,7 @@ const matchingCategoriesAndSandwiches = (users, categories, sandwiches) =>
       objTwo[category.id] = category
       return objTwo
     }, {})
-
     user.categories = matchingObj
-
     let defaultCategory = {
       0: {
         id: 0,
@@ -84,12 +78,10 @@ const matchingCategoriesAndSandwiches = (users, categories, sandwiches) =>
         sandwiches: []
       }
     }
-
     if (Object.keys(user.categories).length < 1) {
       user.categories = defaultCategory
     }
-
-    user.currentCategory = Object.keys(user.categories)[(Object.keys(user.categories).length) - 1]
+    user.currentCategory = Object.keys(user.categories)[0]
     obj[user.id] = user;
     return obj;
   }, {})
@@ -194,7 +186,6 @@ class App extends React.Component{
       })
   }
 
-
   getAllUsers = () =>
     Object.values(this.state.users)
 
@@ -207,8 +198,6 @@ class App extends React.Component{
 
   getUserCategories = () =>
     Object.values(this.getCurrentUser().categories)
-
-  
 
   setCurrentCategory = (currentCategory) => {
     let users = {...this.state.users}
