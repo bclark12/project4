@@ -251,7 +251,6 @@ class App extends React.Component{
   }
 
   addNewSandwich = (sandwich) => {
-    console.log(this.getCurrentUser().currentCategory)
     sandwich.category = this.getCurrentUser().currentCategory
     saveSandwichToServer(sandwich)
     .then(newSandwich => {
@@ -271,7 +270,7 @@ class App extends React.Component{
         {categorySandwichList(this.getCurrentCategory())}
         <UserForm addNewUser={this.addNewUser} />
         <CategoryForm addNewCategory={this.addNewCategory} />
-        <SandwichForm addNewSandwich={this.addNewSandwich} />
+        <SandwichForm addNewSandwich={this.addNewSandwich} currentCategory={this.getCurrentCategory} />
       </div>
     )
   }

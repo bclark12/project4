@@ -10,13 +10,20 @@ class SandwichForm extends Component {
     handleInput = (evnt) => {
         let newSandwich = {...this.state};
         newSandwich[evnt.target.name] = evnt.target.value
+        console.log(this.props.currentCategory().id)
         this.setState(newSandwich)
     }
 
     handleSubmit = (evnt) => {
+        if (this.props.currentCategory().id !== 0) {
         evnt.preventDefault();
         this.props.addNewSandwich(this.state)
         this.setState({ name: "", location: "", description: "" })
+        }
+        else {
+            evnt.preventDefault();
+            return alert("Please Pick Category... if none, add new category")
+        }
     }
 
     render() {
