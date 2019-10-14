@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+
+const deleteSandwichFromServer = (id) =>
+fetch(`/api/sandwich/${id}/`,
+{
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify()
+})
 
 class SandwichDetail extends Component {
     state = {
-        sandwich: {}
+        sandwich: {},
+        redirectToHome: false
     };
 
     getSingleSandwich = () => {
@@ -17,8 +26,20 @@ class SandwichDetail extends Component {
     componentDidMount = () => {
         this.getSingleSandwich();
     }
+    
 
+    deleteSingleSandwich = () => {
+        deleteSandwichFromServer(this.state.sandwich.id)
+        .then(() => {
+            this.props.setSandwiches()
+            this.setState({redirectToHome: true})
+        })
+    }
+    
     render() {
+        if(this.state.redirectToHome) {
+           return( <Redirect to="/" /> )
+        }
         return (
             <div>
                 <Link to="/">Home</Link>
@@ -26,9 +47,9 @@ class SandwichDetail extends Component {
                 <ul>
                     <li>{this.state.sandwich.location}</li>
                     <li>{this.state.sandwich.description}</li>
-                    <li>{this.state.sandwich.createdOn}</li>
-                    
+                    <li>{this.state.sandwich.createdOn}</li>                    
                 </ul>
+                <button onClick={this.deleteSingleSandwich}>Delete</button>
             </div>
         )
     }

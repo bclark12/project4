@@ -255,7 +255,16 @@ class App extends React.Component{
       this.setState({ users })
     })
   } 
-  
+
+  setSandwichCurrentUser = () => {
+    getSandwichesFromServer().then(updatedSandwiches => {
+      let users = {...this.state.users}     
+      let currentCategoryVar = this.state.users[this.state.currentUser].currentCategory
+      users[this.state.currentUser].categories[currentCategoryVar].sandwiches = updatedSandwiches
+      this.setState(users)   
+    })
+  }
+
   render() {
     return (
       <div>
@@ -275,7 +284,10 @@ class App extends React.Component{
               </div>
             )}
           />
-          <Route path="/sandwich/:id" component={SandwichDetail} />
+          <Route 
+            path="/sandwich/:id"
+            render={(props) => <SandwichDetail {...props} setSandwiches={this.setSandwichCurrentUser}  />} 
+            />
         </Switch>
       </div>
     )
