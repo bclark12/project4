@@ -14,4 +14,4 @@ This app is designed for the members of the show me your sandwich facebook group
 
 [Project 4 erd](erd4.JPG)
 
-[Project 4 Wireframe](wireframe4.JPG
+[Project 4 Wireframe](wireframe4.JPG)
