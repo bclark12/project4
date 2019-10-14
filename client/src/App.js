@@ -37,7 +37,7 @@ const userCategoryList = (categories, currentCategoryId, onChange) => {
 const sandwichPreview = (sandwich) => (
   <li>
     <Link to={`/sandwich/${sandwich.id}`}>
-      {sandwich.id} - {sandwich.name}
+      {sandwich.name}
     </Link>
   </li>
 )
@@ -50,7 +50,6 @@ const sandwichList = (sandwichesArray) => (
 
 const categorySandwichList = (category) => (
   <div>
-    {category.category}
     {sandwichList(category.sandwiches)}
   </div>
 )
@@ -273,14 +272,34 @@ class App extends React.Component{
             path="/"
             exact
             render={() => (
-              <div>
+              <div className="body">
+                <h1>Show Me Your Sandwich!</h1>
+                  <div className="usersAndCat">
+                    <div>
+                  <h3>Pick a User</h3>
                 {userList(this.getAllUsers(), this.state.currentUser, this.setCurrentUser)}
+                </div>
+                <div>
+                <h3>Pick a Category</h3>
                 {userCategoryList(this.getUserCategories(), 
                   this.getCurrentUser().currentCategory, this.setCurrentCategory)}
+                  </div>
+                  </div>
+                  <h2>Sandwich List</h2>
                 {categorySandwichList(this.getCurrentCategory())}
-                <UserForm addNewUser={this.addNewUser} />
-                <CategoryForm addNewCategory={this.addNewCategory} />
+                <div className="forms">
+                <h3>Add New Sandwich</h3>
                 <SandwichForm addNewSandwich={this.addNewSandwich} currentCategory={this.getCurrentCategory} />
+                <div className="catAndUsers">
+                <h3>Add New Category</h3>
+                <CategoryForm className="categoryForm" addNewCategory={this.addNewCategory} />
+                <h3>Add New User</h3>
+                <UserForm addNewUser={this.addNewUser} />
+                </div>
+                
+                </div>
+
+                
               </div>
             )}
           />
