@@ -1,6 +1,6 @@
 # project4
 
-What problem does the App solve
+What problem does the App solve?
 
 The purpose of this project is for people to save the different sandwiches that they have tried into different categories.
 
