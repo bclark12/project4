@@ -1,3 +1,36 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background: cornsilk
+}
+
+button {
+  color: red
+}
+
+ul {
+  list-style: none;
+  margin-right: 40px
+}
+
+h1 {
+  display: inline-block
+}
+
+div {
+  margin: 10px
+}
+
+.usersAndCat {
+  display: flex;
+  justify-content: center
+}
+
+.catAndUsers {
+  margin-top: 80px
+}
+
 .App {
   text-align: center;
 }

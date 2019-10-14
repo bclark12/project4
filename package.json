@@ -1,7 +1,11 @@
 {
-    "name": "sandwichLog",
-    "scripts": {
-      "build": "cd client && npm install && npm run build && cd ..",
-      "postinstall": "npm run build && echo 'Client built!'"
-    }
+  "name": "sandwichLog",
+  "scripts": {
+    "build": "cd client && npm install && npm run build && cd ..",
+    "postinstall": "npm run build && echo 'Client built!'"
+  },
+  "dependencies": {
+    "bulma": "^0.7.5",
+    "yarn": "^1.19.1"
   }
+}

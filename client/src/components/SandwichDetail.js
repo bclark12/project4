@@ -41,8 +41,9 @@ class SandwichDetail extends Component {
            return( <Redirect to="/" /> )
         }
         return (
-            <div>
+            <div className="body">
                 <Link to="/">Home</Link>
+                <div></div>
                 <h1>{this.state.sandwich.name}</h1>
                 <ul>
                     <li>{this.state.sandwich.location}</li>
