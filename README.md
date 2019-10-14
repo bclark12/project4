@@ -12,4 +12,4 @@ This app is designed for the members of the show me your sandwich facebook group
 
 [Project Board](https://github.com/bclark12/project4/projects)
 
-[Project 4 Wireframe](erd4.jpg)
+[Project 4 Wireframe](erd4.JPG)
